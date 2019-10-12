@@ -4,6 +4,10 @@ import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.Digest;
 import org.bouncycastle.pqc.math.linearalgebra.PolynomialRingGF2;
 
+/**
+ *
+ * @author maxim
+ */
 public class NTS_KEM_Parameters
         implements CipherParameters {
 
@@ -56,6 +60,10 @@ public class NTS_KEM_Parameters
         this(DEFAULT_M, DEFAULT_T);
     }
 
+    /**
+     *
+     * @param digest
+     */
     public NTS_KEM_Parameters(Digest digest) {
         this(DEFAULT_M, DEFAULT_T, digest);
     }
@@ -112,6 +120,7 @@ public class NTS_KEM_Parameters
      *
      * @param m degree of the finite field GF(2^m)
      * @param t error correction capability of the code
+     * @param digest
      * @throws IllegalArgumentException if <tt>m &lt; 1</tt> or <tt>m &gt;
      * 32</tt> or
      * <tt>t &lt; 0</tt> or <tt>t &gt; n</tt>.

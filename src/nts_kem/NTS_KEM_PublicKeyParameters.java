@@ -2,6 +2,10 @@ package nts_kem;
 
 import org.bouncycastle.pqc.math.linearalgebra.GF2Matrix;
 
+/**
+ *
+ * @author maxim
+ */
 public class NTS_KEM_PublicKeyParameters
         extends NTS_KEM_KeyParameters {
 

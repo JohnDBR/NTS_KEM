@@ -184,9 +184,10 @@ public class PermutationCustom
     }
     
     /**
-     * Compute the permutation of a given int array. The given array should have
-     * the same size of the permutation array.
+     * Compute the permutation of a given int array.The given array should have
+ the same size of the permutation array.
      *
+     * @param vector
      * @return int[] result
      */
     public int[] permutateVector(int[] vector)

@@ -2,7 +2,10 @@ package nts_kem;
 
 import pqc.math.linearalgebra.PermutationCustom;
 
-
+/**
+ *
+ * @author maxim
+ */
 public class NTS_KEM_PrivateKeyParameters
     extends NTS_KEM_KeyParameters
 {

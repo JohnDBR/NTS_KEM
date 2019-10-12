@@ -24,7 +24,9 @@ public class NTS_KEM_KeyPairGenerator
     implements AsymmetricCipherKeyPairGenerator
 {
 
-
+    /**
+     *
+     */
     public NTS_KEM_KeyPairGenerator()
     {
 
@@ -147,11 +149,19 @@ public class NTS_KEM_KeyPairGenerator
         return new AsymmetricCipherKeyPair(pubKey, privKey);
     }
 
+    /**
+     *
+     * @param param
+     */
     public void init(KeyGenerationParameters param)
     {
         this.initialize(param);
     }
 
+    /**
+     *
+     * @return
+     */
     public AsymmetricCipherKeyPair generateKeyPair()
     {
         return genKeyPair();

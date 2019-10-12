@@ -198,6 +198,7 @@ public final class GoppaCode
      *
      * @param field the finite field
      * @param gp    the irreducible Goppa polynomial
+     * @return 
      */
     public static GF2Matrix createCanonicalCheckMatrix(GF2mField field,
                                                        PolynomialGF2mSmallM gp)
@@ -275,6 +276,7 @@ public final class GoppaCode
      * @param field the finite field
      * @param gp    the irreducible Goppa polynomial
      * @param p     the permutation to create the matrix 
+     * @return  
      */
     public static HCheck createNTS_KEMCheckMatrix(GF2mField field,
                                                        PolynomialGF2mSmallM gp,

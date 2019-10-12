@@ -2,6 +2,10 @@ package pqc.math.linearalgebra;
 
 import java.security.SecureRandom;
 
+/**
+ *
+ * @author maxim
+ */
 public class RandUtils
 {
     static int nextInt(SecureRandom rand, int n)
