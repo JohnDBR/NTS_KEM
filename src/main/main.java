@@ -31,7 +31,7 @@ public class main {
         //t = 50 the error correction capability of the code 
         //l = 256 the length of the random key to be encapsulated
         NTS_KEM_Parameters nkParams = new NTS_KEM_Parameters();
-        //McElieceParameters(int m, int t, int poly) to use custom values
+        //new McElieceParameters(int m, int t, int poly) to use custom values
         //PolynomialRingGF2.getIrreduciblePolynomial(m); to get a poly 
         
         //The key parameters share the same values of the crypo system
