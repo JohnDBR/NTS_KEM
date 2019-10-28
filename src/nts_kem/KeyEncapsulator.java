@@ -16,7 +16,7 @@ public interface KeyEncapsulator {
     
     public void init(boolean arg0, CipherParameters arg1);
 
-    public byte[] messageEncrypt(byte[] arg0);
+    public NTS_KEM_EncodeParameters encode();
 
-    public byte[] messageDecrypt(byte[] arg0) throws InvalidCipherTextException;
+    public byte[] decode(NTS_KEM_EncodeParameters ep) throws InvalidCipherTextException;
 }

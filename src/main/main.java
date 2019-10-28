@@ -7,6 +7,7 @@ package main;
 
 import java.nio.charset.Charset;
 import nts_kem.NTS_KEM_Cipher;
+import nts_kem.NTS_KEM_EncodeParameters;
 import nts_kem.NTS_KEM_KeyGenerationParameters;
 import nts_kem.NTS_KEM_KeyPairGenerator;
 import nts_kem.NTS_KEM_Parameters;
@@ -15,6 +16,7 @@ import nts_kem.NTS_KEM_PublicKeyParameters;
 import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
 import org.bouncycastle.crypto.CryptoServicesRegistrar;
 import org.bouncycastle.crypto.InvalidCipherTextException;
+import pqc.math.linearalgebra.ByteUtils;
 
 
 /**
@@ -68,8 +70,18 @@ public class main {
         NTS_KEM_Cipher nkChiper = new NTS_KEM_Cipher();
         nkChiper.init(true, nkPublicKey);
 
-        byte[] chiperText = nkChiper.Encode();
+        NTS_KEM_EncodeParameters encodeParameters = nkChiper.encode();
         
+        System.out.println("kr = ");
+        System.out.println(ByteUtils.getBinaryStringFromBytes(
+                    encodeParameters.getKr().getEncoded()
+                )
+            );
+        System.out.println("cbc = ");
+        System.out.println(ByteUtils.getBinaryStringFromBytes(
+                    encodeParameters.getC().getEncoded()
+                )
+            );
     }
     
 }
