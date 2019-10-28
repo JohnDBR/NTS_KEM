@@ -136,13 +136,17 @@ public class NTS_KEM_KeyPairGenerator
         
         // generate keys
         NTS_KEM_PublicKeyParameters pubKey = 
-                new NTS_KEM_PublicKeyParameters(gPrime, t, l);
+                new NTS_KEM_PublicKeyParameters(gPrime, t, l, n);
         NTS_KEM_PrivateKeyParameters privKey = 
                 new NTS_KEM_PrivateKeyParameters(
                         h.getA(), 
                         h.getH(), 
                         p, 
-                        z
+                        z,
+                        k, 
+                        n, 
+                        field,
+                        gp
                 );
 
         // return key pair
