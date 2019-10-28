@@ -5,6 +5,8 @@
  */
 package main;
 
+import java.nio.charset.Charset;
+import nts_kem.NTS_KEM_Cipher;
 import nts_kem.NTS_KEM_KeyGenerationParameters;
 import nts_kem.NTS_KEM_KeyPairGenerator;
 import nts_kem.NTS_KEM_Parameters;
@@ -12,6 +14,7 @@ import nts_kem.NTS_KEM_PrivateKeyParameters;
 import nts_kem.NTS_KEM_PublicKeyParameters;
 import org.bouncycastle.crypto.AsymmetricCipherKeyPair;
 import org.bouncycastle.crypto.CryptoServicesRegistrar;
+import org.bouncycastle.crypto.InvalidCipherTextException;
 
 
 /**
@@ -54,11 +57,19 @@ public class main {
         NTS_KEM_PrivateKeyParameters nkPrivateKey 
                 = (NTS_KEM_PrivateKeyParameters) generateKeyPair.getPrivate();
         
-        System.out.println("PubKey:");
-        System.out.println(nkPublicKey.getKey());
+        // Uncomment to see the keys, it will take a lot of time printing
         
-        System.out.println("PrivKey:");
-        System.out.println(nkPrivateKey.getKey());
+        //System.out.println("PubKey:");
+        //System.out.println(nkPublicKey.getKey());
+        
+        //System.out.println("PrivKey:");
+        //System.out.println(nkPrivateKey.getKey());
+        
+        NTS_KEM_Cipher nkChiper = new NTS_KEM_Cipher();
+        nkChiper.init(true, nkPublicKey);
+
+        byte[] chiperText = nkChiper.Encode();
+        
     }
     
 }
