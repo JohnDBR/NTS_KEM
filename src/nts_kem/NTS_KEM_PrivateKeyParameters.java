@@ -1,5 +1,7 @@
 package nts_kem;
 
+import org.bouncycastle.pqc.math.linearalgebra.GF2mField;
+import org.bouncycastle.pqc.math.linearalgebra.PolynomialGF2mSmallM;
 import pqc.math.linearalgebra.PermutationCustom;
 
 /**
@@ -12,6 +14,12 @@ public class NTS_KEM_PrivateKeyParameters
 
     // the OID of the algorithm
     private String oid;
+    
+    // the length of the code
+    private int n;
+    
+    // the dimension of the code, where <tt>k &gt;= n - mt</tt>
+    private int k;
 
     // the permutation used to generate the check matrix
     private PermutationCustom p;
@@ -24,26 +32,73 @@ public class NTS_KEM_PrivateKeyParameters
     
     // Array z of 256 bits used for the decryption process
     int[] z;
+    
+    // the underlying finite field
+    private GF2mField field;
+
+    // the irreducible Goppa polynomial
+    private PolynomialGF2mSmallM goppaPoly;
 
     /**
      * Constructor.
-     *
+     * 
+     * @param n         the length of the code
+     * @param k         the dimension of the code
      * @param a         Array a to generate H matrix as the NTS_KEM paper 
      *                  specifies 
      * @param h         Array h to generate H matrix as the NTS_KEM paper 
      *                  specifies 
      * @param p         the permutation used to generate the check matrix
      * @param z         Array z of 256 bits used for the decryption process
-
+     * @param field     the field polynomial defining the finite field
+     *                  <tt>GF(2<sup>m</sup>)</tt>
+     * @param gp        the irreducible Goppa polynomial
      */
     public NTS_KEM_PrivateKeyParameters(int[] a, int[] h, PermutationCustom p,
-                                        int[] z)
+                                        int[] z, int k, int n, GF2mField field,
+                                        PolynomialGF2mSmallM gp)
     {
         super(true, null);
         this.a = a;
         this.h = h;
         this.p = p;
         this.z = z;
+        this.k = k;
+        this.n = n;
+        this.field = field;
+        this.goppaPoly = gp;
+    }
+    
+    /**
+     * @return the length of the code
+     */
+    public int getN()
+    {
+        return n;
+    }
+    
+    /**
+     * @return the dimension of the code
+     */
+    public int getK()
+    {
+        return k;
+    }
+    
+    /**
+     * @return the finite field <tt>GF(2<sup>m</sup>)</tt>
+     */
+    public GF2mField getField()
+    {
+        return field;
+    }
+    
+    /**
+     * @return the irreducible Goppa polynomial
+     */
+    public PolynomialGF2mSmallM getGoppaPoly()
+    {
+        return goppaPoly;
     }
 
     /**

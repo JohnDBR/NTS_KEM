@@ -9,6 +9,9 @@ import org.bouncycastle.pqc.math.linearalgebra.GF2Matrix;
 public class NTS_KEM_PublicKeyParameters
         extends NTS_KEM_KeyParameters {
 
+    // the length of the code
+    private int n;
+    
     // length of the key to be encapsulated
     private int l;
 
@@ -21,15 +24,25 @@ public class NTS_KEM_PublicKeyParameters
     /**
      * Constructor.
      *
-     * @param l length of the key to be encapsulated
-     * @param t the error correction capability of the code
      * @param g the generator matrix
+     * @param t the error correction capability of the code
+     * @param l length of the key to be encapsulated
+     * @param n the length of the code
      */
-    public NTS_KEM_PublicKeyParameters(GF2Matrix g, int t, int l) {
+    public NTS_KEM_PublicKeyParameters(GF2Matrix g, int t, int l, int n) {
         super(false, null);
-        this.l = l;
-        this.t = t;
         this.g = new GF2Matrix(g);
+        this.t = t;
+        this.l = l;
+        this.n = n;
+    }
+    
+    /**
+     * @return the length of the code
+     */
+    public int getN()
+    {
+        return n;
     }
 
     /**
