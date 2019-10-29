@@ -148,15 +148,8 @@ public class NTS_KEM_Cipher
         }
         // Generate uniformly at random an error vector e ∈ Fn2 with Hamming 
         // * weight τ.
-        //byte[] e = RandomVectorE();
-        //GF2Vector e = new GF2Vector(input.length, input);
         GF2Vector e = new GF2Vector(n, t, sr);
         byte[] eArray = e.getEncoded();
-        //int[] vec = e.getVecArray();
-        //GF2Vector ea = e.extractLeftVector(((NTS_KEM_PublicKeyParameters) key).getL());
-        //byte[] eaArray = ea.getEncoded();
-        //GF2Vector m = computeInputRepresentative(input);
-        //GF2Vector z = new GF2Vector(n, t, sr);
         
         int kMinusL = k - ((NTS_KEM_PublicKeyParameters) key).getL();
         int eaArrayLength = kMinusL / 8 + 1;
@@ -173,22 +166,13 @@ public class NTS_KEM_Cipher
         sd.update(eaArray, 0, eaArray.length);
         byte[] keArray = new byte[
                 ((NTS_KEM_PublicKeyParameters) key).getL() / 8
-            ];//ea.length / 8];
+            ];
         sd.doFinal(keArray, 0);
         GF2Vector ke = GF2Vector.OS2VP(
                 ((NTS_KEM_PublicKeyParameters) key).getL(), 
                 keArray
             );
-
         
-        // Construct the message vector m = (ea | ke) ∈ Fk2
-        //int[] m = new int[k];
-        //for (int i = 0; i < kMinusL; i++) {
-        //    m[i] = ea[i];
-        //}
-        //for (int i = kMinusL; i < kMinusL + ((NTS_KEM_PublicKeyParameters) key).getL(); i++) {
-        //    m[i] = ke[i - kMinusL];
-        //}
         String eBitRepresentation = ByteUtils.getBinaryStringFromBytes(
                 e.getEncoded()
             );
@@ -207,7 +191,6 @@ public class NTS_KEM_Cipher
             );
         byte[] mArray = ByteUtils.getBytesFromBinaryString(mBitRepresentation);
         GF2Vector m = GF2Vector.OS2VP(k, mArray);
-        //GF2Vector m = new GF2Vector(int[] v, int length);
         
         // Compute cb = ke + eb
         int kPlusL = k + ((NTS_KEM_PublicKeyParameters) key).getL();
@@ -225,15 +208,11 @@ public class NTS_KEM_Cipher
         GF2Matrix g = ((NTS_KEM_PublicKeyParameters) key).getG();
         Vector mG = g.leftMultiply(m);
         String ecBitRepresentation = eBitRepresentation.substring(k, n);
-        //String ecForXorBitRep = addCustomPadding(ecBitRepresentation, n);
-        //byte[] ecArray = getBytesFromBinaryString(ecForXorBitRep);
-        //GF2Vector ec = GF2Vector.OS2VP(n, ecArray);
         byte[] ecArray = ByteUtils.getBytesFromBinaryString(
                 ecBitRepresentation
             );
         GF2Vector ec = GF2Vector.OS2VP(n-k, ecArray);
         byte[] mgArray = mG.getEncoded();
-        //GF2Vector mGEc = (GF2Vector) mG.add(ec);
         String mgBitRepresentation = ByteUtils.getBinaryStringFromBytes(
                 mgArray
             );
@@ -271,7 +250,6 @@ public class NTS_KEM_Cipher
         byte[] keeArray = ByteUtils.getBytesFromBinaryString(
                 keeBitRepresentation
             );
-        //GF2Vector kee = GF2Vector.OS2VP(k, keeArray);
         SHAKEDigest sd2 = new SHAKEDigest(
                 ((NTS_KEM_PublicKeyParameters) key).getL()
             );
