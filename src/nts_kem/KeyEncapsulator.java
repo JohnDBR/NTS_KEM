@@ -7,6 +7,7 @@ package nts_kem;
 
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.InvalidCipherTextException;
+import pqc.math.linearalgebra.GF2VectorCustom;
 
 /**
  *
@@ -18,5 +19,5 @@ public interface KeyEncapsulator {
 
     public NTS_KEM_EncodeParameters encode();
 
-    public byte[] decode(NTS_KEM_EncodeParameters ep) throws InvalidCipherTextException;
+    public GF2VectorCustom decode(NTS_KEM_EncodeParameters ep) throws InvalidCipherTextException;
 }

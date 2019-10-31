@@ -15,7 +15,7 @@ import org.bouncycastle.pqc.math.linearalgebra.GF2Vector;
  */
 public class GF2VectorUtils {
     
-    private static GF2Vector concatLeftToRight(GF2Vector a, GF2Vector b,
+    public static GF2Vector concatLeftToRight(GF2Vector a, GF2Vector b,
                                                int expectedLength) 
     {
         String aBinaryString = ByteUtils.getBinaryStringFromBytes(
@@ -31,7 +31,7 @@ public class GF2VectorUtils {
             );
     }
     
-    private static GF2Vector concatRightToLeft(GF2Vector a, GF2Vector b,
+    public static GF2Vector concatRightToLeft(GF2Vector a, GF2Vector b,
                                                int expectedLength)
     {
         String aBinaryString = ByteUtils.getBinaryStringFromBytes(
@@ -47,7 +47,7 @@ public class GF2VectorUtils {
             );
     }
     
-    private static GF2Vector concatLeftToRight(GF2Vector a, GF2Vector b) {
+    public static GF2Vector concatLeftToRight(GF2Vector a, GF2Vector b) {
         String aBinaryString = ByteUtils.getBinaryStringFromBytes(
                 a.getEncoded()
             );
@@ -61,7 +61,7 @@ public class GF2VectorUtils {
             );
     }
     
-    private static GF2Vector concatRightToLeft(GF2Vector a, GF2Vector b) {
+    public static GF2Vector concatRightToLeft(GF2Vector a, GF2Vector b) {
         String aBinaryString = ByteUtils.getBinaryStringFromBytes(
                 a.getEncoded()
             );
@@ -75,7 +75,7 @@ public class GF2VectorUtils {
             );
     }
     
-    private static GF2Vector SHA3(GF2Vector vector, int bitLength) {
+    public static GF2Vector SHA3(GF2Vector vector, int bitLength) {
         byte[] byteArray = vector.getEncoded();
         SHAKEDigest sd = new SHAKEDigest(bitLength);
         sd.update(byteArray, 0, byteArray.length);
@@ -84,7 +84,7 @@ public class GF2VectorUtils {
         return GF2Vector.OS2VP(bitLength, newArray);
     }
     
-    private static GF2Vector SHA3(String binaryString, int bitLength) {
+    public static GF2Vector SHA3(String binaryString, int bitLength) {
         byte[] byteArray = ByteUtils.getBytesFromBinaryString(binaryString);
         SHAKEDigest sd = new SHAKEDigest(bitLength);
         sd.update(byteArray, 0, byteArray.length);
@@ -93,7 +93,15 @@ public class GF2VectorUtils {
         return GF2Vector.OS2VP(bitLength, newArray);
     }
     
-    private static GF2Vector computeInputRepresentative(byte[] input, 
+    public static GF2Vector SHA3(byte[] byteArray, int bitLength) {
+        SHAKEDigest sd = new SHAKEDigest(bitLength);
+        sd.update(byteArray, 0, byteArray.length);
+        byte[] newArray = new byte[bitLength / 8];
+        sd.doFinal(newArray, 0);
+        return GF2Vector.OS2VP(bitLength, newArray);
+    }
+
+    public static GF2Vector computeInputRepresentative(byte[] input, 
                                                         int maxPlainTextSize, 
                                                         int k) 
     {
@@ -103,7 +111,7 @@ public class GF2VectorUtils {
         return GF2Vector.OS2VP(k, data);
     }
     
-    private static byte[] computeMessage(GF2Vector mr)
+    public static byte[] computeMessage(GF2Vector mr)
             throws InvalidCipherTextException {
         byte[] mrBytes = mr.getEncoded();
         // find first non-zero byte
