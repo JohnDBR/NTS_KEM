@@ -72,16 +72,29 @@ public class main {
 
         NTS_KEM_EncodeParameters encodeParameters = nkChiper.encode();
         
-        System.out.println("kr = ");
-        System.out.println(ByteUtils.getBinaryStringFromBytes(
-                    encodeParameters.getKr().getEncoded()
-                )
-            );
+        //System.out.println("kr = ");
+        //System.out.println(ByteUtils.getBinaryStringFromBytes(
+        //            encodeParameters.getKr().getEncoded()
+        //        )
+        //    );
         System.out.println("cbc = ");
         System.out.println(ByteUtils.getBinaryStringFromBytes(
-                    encodeParameters.getC().getEncoded()
-                )
-            );
+                encodeParameters.getC().getEncoded()
+        )
+        );
+
+        int[] i = new int[5];
+        for (int j = 0; j < 5; j++) {
+            i[j] = j;
+        }
+        int[] k = new int[5];
+        for (int j = 0; j < 5; j++) {
+            k[j] = j;
+        }
+        int[] result = new int[5];
+        for (int j = 0; j < 5; j++) {
+            result[j] = i[j]^k[j];
+        }
     }
     
 }

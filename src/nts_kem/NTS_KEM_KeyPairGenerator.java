@@ -116,7 +116,7 @@ public class NTS_KEM_KeyPairGenerator
         // generate canonical check matrix with a permutation
         PermutationCustom p = new PermutationCustom(n, random);
         HCheck h = GoppaCode.createNTS_KEMCheckMatrix(field, gp, p);
-        GF2Matrix shortH = h.getHCheck().getRightSubMatrix();
+        GF2Matrix shortH = h.getHCheck().getLeftSubMatrix(); //.getRightSubMatrix();
 
         // compute short systematic form of generator matrix
         GF2Matrix shortG = (GF2Matrix)shortH.computeTranspose();

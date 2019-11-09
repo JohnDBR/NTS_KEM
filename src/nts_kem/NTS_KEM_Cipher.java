@@ -208,7 +208,7 @@ public class NTS_KEM_Cipher
         GF2VectorCustom kee = ke.concatRight(e);
         GF2Vector kr = kee.SHA3(((NTS_KEM_PublicKeyParameters) key).getL());
         
-        return new NTS_KEM_EncodeParameters(e, ke, m, cbc, kr);
+        return new NTS_KEM_EncodeParameters(cbc);
     }
     
     public GF2VectorCustom decode(NTS_KEM_EncodeParameters ep) {

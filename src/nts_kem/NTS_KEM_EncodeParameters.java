@@ -49,6 +49,17 @@ public class NTS_KEM_EncodeParameters {
         this.c = c;
         this.kr = kr;
     }
+    
+    /**
+     * Constructor.
+     * 
+     * @param c         c* that according to the paper is 
+     *                  c* = (cb | cc) ∈ F(n-k+l)2 
+     */
+    public NTS_KEM_EncodeParameters(GF2Vector c) 
+    {
+        this.c = c;
+    }
 
     public GF2Vector getE() {
         return e;
