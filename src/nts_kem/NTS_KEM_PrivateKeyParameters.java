@@ -25,19 +25,22 @@ public class NTS_KEM_PrivateKeyParameters
     private PermutationCustom p;
     
     // Array a to generate H matrix as the NTS_KEM paper specifies 
-    int[] a;
+    private int[] a;
 
     // Array h to generate H matrix as the NTS_KEM paper specifies
-    int[] h;
+    private int[] h;
     
     // Array z of 256 bits used for the decryption process
-    int[] z;
+    private int[] z;
     
     // the underlying finite field
     private GF2mField field;
 
     // the irreducible Goppa polynomial
     private PolynomialGF2mSmallM goppaPoly;
+    
+    // length of the key to be encapsulated
+    private int l;
 
     /**
      * Constructor.
@@ -56,7 +59,7 @@ public class NTS_KEM_PrivateKeyParameters
      */
     public NTS_KEM_PrivateKeyParameters(int[] a, int[] h, PermutationCustom p,
                                         int[] z, int k, int n, GF2mField field,
-                                        PolynomialGF2mSmallM gp)
+                                        PolynomialGF2mSmallM gp, int l)
     {
         super(true, null);
         this.a = a;
@@ -67,6 +70,7 @@ public class NTS_KEM_PrivateKeyParameters
         this.n = n;
         this.field = field;
         this.goppaPoly = gp;
+        this.l = l;
     }
     
     /**
@@ -139,6 +143,13 @@ public class NTS_KEM_PrivateKeyParameters
     public String getKey() {
         return "(" + a.toString() + ", " + h.toString() + ", " +  
                 p.getVector().toString() + ", " + z.toString() +")";
+    }
+    
+    /**
+     * @return length of the key to be encapsulated
+     */
+    public int getL() {
+        return l;
     }
 
 }

@@ -148,7 +148,8 @@ public class NTS_KEM_KeyPairGenerator
                         k, 
                         n, 
                         field,
-                        gp
+                        gp, 
+                        l
                 );
 
         // return key pair

@@ -19,5 +19,5 @@ public interface KeyEncapsulator {
 
     public NTS_KEM_EncodeParameters encode();
 
-    public GF2VectorCustom decode(NTS_KEM_EncodeParameters ep) throws InvalidCipherTextException;
+    public GF2VectorCustom decode(NTS_KEM_EncodeParameters ep);
 }

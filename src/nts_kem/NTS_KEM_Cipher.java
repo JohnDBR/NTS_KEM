@@ -202,6 +202,14 @@ public class NTS_KEM_Cipher
     }
     
     public GF2VectorCustom decode(NTS_KEM_EncodeParameters ep) {
+        if (forEncryption) {
+            throw new IllegalStateException("cipher initialised for decryption");
+        }
+        
+        GF2VectorCustom c = new GF2VectorCustom(ep.getC());
+        String cBitStringRepresentation = ByteUtils.erasePadding(((NTS_KEM_PrivateKeyParameters) key).getL() + n - k, c.getBinaryString());
+        cBitStringRepresentation = ByteUtils.addCustomPadding(cBitStringRepresentation, n);
+        
         return null;
     }
 }

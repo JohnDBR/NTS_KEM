@@ -83,6 +83,9 @@ public class main {
         )
         );
 
+        nkChiper.init(false, nkPrivateKey);
+        nkChiper.decode(encodeParameters);
+        
         int[] i = new int[5];
         for (int j = 0; j < 5; j++) {
             i[j] = j;
