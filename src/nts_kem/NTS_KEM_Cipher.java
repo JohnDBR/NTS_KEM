@@ -179,26 +179,14 @@ public class NTS_KEM_Cipher
         
         // Compute cb = ke + eb
         int kPlusL = k + ((NTS_KEM_PublicKeyParameters) key).getL();
-        GF2VectorCustom eb = new GF2VectorCustom(e.getBinaryString().substring(k, kPlusL)); //GF2Vector.OS2VP(((NTS_KEM_PublicKeyParameters) key).getL(), ebArray            );
+        GF2VectorCustom eb = new GF2VectorCustom(e.getBinaryString().substring(k, kPlusL));
         GF2VectorCustom cb = new GF2VectorCustom((GF2Vector) ke.add(eb));
         
         // Compute cc = (m · Q) + ec
         GF2Matrix g = ((NTS_KEM_PublicKeyParameters) key).getG();
         Vector mG = g.leftMultiply(m);
-        GF2Vector ec = new GF2VectorCustom(e.getBinaryString().substring(k, n)); 
-        //byte[] mgArray = mG.getEncoded();
-        //String mgBitRepresentation = ByteUtils.getBinaryStringFromBytes(mgArray);
-        //String mgForXorBitRep = ByteUtils.erasePadding(
-        //        n-k, 
-        //        mgBitRepresentation
-        //    );
-        //byte[] mgForXorArray = ByteUtils.getBytesFromBinaryString(
-        //        mgForXorBitRep
-        //    );
-        //GF2VectorCustom mGForXor = new GF2VectorCustom(mgForXorArray, n-k);
-        //GF2VectorCustom mGEc = new GF2VectorCustom((GF2Vector) mGForXor.add(ec));
+        GF2Vector ec = new GF2VectorCustom(e.getBinaryString().substring(k, n));
         GF2VectorCustom mGEc = new GF2VectorCustom((GF2Vector) mG.add(ec));
-
         
         // Compute c* = (cb | cc)
         String ccBitRepresentation = mGEc.getBinaryString(); 
