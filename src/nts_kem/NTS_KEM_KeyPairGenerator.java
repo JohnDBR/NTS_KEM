@@ -13,6 +13,7 @@ import pqc.math.linearalgebra.GoppaCode;
 import pqc.math.linearalgebra.PermutationCustom;
 import org.bouncycastle.pqc.math.linearalgebra.PolynomialGF2mSmallM;
 import org.bouncycastle.pqc.math.linearalgebra.PolynomialRingGF2m;
+import pqc.math.linearalgebra.GF2MatrixUtils;
 import pqc.math.linearalgebra.GoppaCode.HCheck;
 
 
@@ -116,7 +117,7 @@ public class NTS_KEM_KeyPairGenerator
         // generate canonical check matrix with a permutation
         PermutationCustom p = new PermutationCustom(n, random);
         HCheck h = GoppaCode.createNTS_KEMCheckMatrix(field, gp, p);
-        GF2Matrix shortH = h.getHCheck().getLeftSubMatrix(); //.getRightSubMatrix();
+        GF2Matrix shortH = GF2MatrixUtils.getLeftSubMatrix(h.getHCheck(), n-m*t);//.getLeftSubMatrix(); //.getRightSubMatrix();
 
         // compute short systematic form of generator matrix
         GF2Matrix shortG = (GF2Matrix)shortH.computeTranspose();
@@ -136,7 +137,8 @@ public class NTS_KEM_KeyPairGenerator
         
         // generate keys
         NTS_KEM_PublicKeyParameters pubKey = 
-                new NTS_KEM_PublicKeyParameters(gPrime, t, l, n);
+                //new NTS_KEM_PublicKeyParameters(gPrime, t, l, n);
+                new NTS_KEM_PublicKeyParameters(shortG, t, l, n);
         NTS_KEM_PrivateKeyParameters privKey = 
                 new NTS_KEM_PrivateKeyParameters(
                         h.getA(), 
