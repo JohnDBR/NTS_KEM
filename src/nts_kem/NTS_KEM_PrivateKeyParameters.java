@@ -1,7 +1,10 @@
 package nts_kem;
 
+import org.bouncycastle.pqc.math.linearalgebra.GF2Matrix;
 import org.bouncycastle.pqc.math.linearalgebra.GF2mField;
+import org.bouncycastle.pqc.math.linearalgebra.GoppaCode;
 import org.bouncycastle.pqc.math.linearalgebra.PolynomialGF2mSmallM;
+import org.bouncycastle.pqc.math.linearalgebra.PolynomialRingGF2m;
 import pqc.math.linearalgebra.PermutationCustom;
 
 /**
@@ -20,6 +23,9 @@ public class NTS_KEM_PrivateKeyParameters
     
     // the dimension of the code, where <tt>k &gt;= n - mt</tt>
     private int k;
+    
+    // length of the key to be encapsulated
+    private int l;
 
     // the permutation used to generate the check matrix
     private PermutationCustom p;
@@ -39,8 +45,11 @@ public class NTS_KEM_PrivateKeyParameters
     // the irreducible Goppa polynomial
     private PolynomialGF2mSmallM goppaPoly;
     
-    // length of the key to be encapsulated
-    private int l;
+    // the canonical check matrix of the code
+    private GF2Matrix canonicalH;
+    
+    // the matrix used to compute square roots in <tt>(GF(2^m))^t</tt>
+    private PolynomialGF2mSmallM[] qInv;
 
     /**
      * Constructor.
@@ -56,6 +65,7 @@ public class NTS_KEM_PrivateKeyParameters
      * @param field     the field polynomial defining the finite field
      *                  <tt>GF(2<sup>m</sup>)</tt>
      * @param gp        the irreducible Goppa polynomial
+     * @param l         the length of the key to be encapsulated
      */
     public NTS_KEM_PrivateKeyParameters(int[] a, int[] h, PermutationCustom p,
                                         int[] z, int k, int n, GF2mField field,
@@ -71,6 +81,11 @@ public class NTS_KEM_PrivateKeyParameters
         this.field = field;
         this.goppaPoly = gp;
         this.l = l;
+        
+        this.canonicalH = GoppaCode.createCanonicalCheckMatrix(field, gp);
+        PolynomialRingGF2m ring = new PolynomialRingGF2m(field, gp);
+         // matrix used to compute square roots in (GF(2^m))^t
+        this.qInv = ring.getSquareRootMatrix();
     }
     
     /**
@@ -150,6 +165,14 @@ public class NTS_KEM_PrivateKeyParameters
      */
     public int getL() {
         return l;
+    }
+
+    public GF2Matrix getCanonicalH() {
+        return canonicalH;
+    }
+
+    public PolynomialGF2mSmallM[] getqInv() {
+        return qInv;
     }
 
 }

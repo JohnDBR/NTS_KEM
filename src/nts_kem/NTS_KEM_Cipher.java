@@ -206,9 +206,38 @@ public class NTS_KEM_Cipher
             throw new IllegalStateException("cipher initialised for decryption");
         }
         
+        NTS_KEM_PrivateKeyParameters privKey = ((NTS_KEM_PrivateKeyParameters) key);
+        
         GF2VectorCustom c = new GF2VectorCustom(ep.getC());
-        String cBitStringRepresentation = ByteUtils.erasePadding(((NTS_KEM_PrivateKeyParameters) key).getL() + n - k, c.getBinaryString());
+        String cBitStringRepresentation = ByteUtils.erasePadding(privKey.getL() + n - k, c.getBinaryString());        
         cBitStringRepresentation = ByteUtils.addCustomPadding(cBitStringRepresentation, n);
+        GF2Vector cNew = GF2Vector.OS2VP(cBitStringRepresentation.length(), ByteUtils.getBytesFromBinaryString(cBitStringRepresentation));
+        
+        // compute syndrome of c P^-1
+        GF2Vector syndrome = (GF2Vector) privKey.getCanonicalH().rightMultiply(cNew);
+
+        // decode syndrome
+        GF2Vector e = GoppaCode.syndromeDecode(
+                syndrome, 
+                privKey.getField(), 
+                privKey.getGoppaPoly(), 
+                privKey.getqInv()
+        );
+        GF2Vector key = (GF2Vector) cNew.add(e);
+
+        // multiply error vector with P
+        e = (GF2Vector) e.multiply(new Permutation(privKey.getP().getVector()));
+        
+        // Obtaining cb from c
+        String cbBitStringRepresentation = cBitStringRepresentation.substring(privKey.getK() - privKey.getL(), privKey.getK());
+        String eb = new GF2VectorCustom(e.getEncoded(), e.getLength()).getBinaryString().substring(privKey.getK() - privKey.getL(), privKey.getK());
+                
+        // Obtaining ke = cb - eb
+        String keBitStringRepresentation = ByteUtils.substractBinaryStrings(cbBitStringRepresentation, eb);
+        
+        // hamming weigth of the error vector
+        int hw = e.getHammingWeight();
+        GF2Vector ke = new GF2VectorCustom(e).SHA3(n);
         
         return null;
     }

@@ -109,7 +109,20 @@ public class ByteUtils {
             s /= 2; 
             i--; j--; 
         }*/        
-        return addBinaryStrings(a, findTwoscomplementBinaryString(b));
+        
+        if (a.length() > b.length()) {
+            b = addCustomPadding(b, a.length());
+        } else if (a.length() < b.length()) {
+            a = addCustomPadding(a, b.length());
+        }
+
+        return ByteUtils.erasePadding(
+                a.length(), 
+                addBinaryStrings(
+                        a, 
+                        findTwoscomplementBinaryString(b)
+                )
+        );
     }
     
     static String addBinaryStrings(String a, String b) {
