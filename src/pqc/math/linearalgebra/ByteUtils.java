@@ -75,4 +75,77 @@ public class ByteUtils {
         }
         return result;
     }
+    
+    public static String substractBinaryStrings(String a, String b) {
+        /*String result = "", borrow = "0";
+        if (a.length() > b.length()) {
+            b = addCustomPadding(b, a.length());
+        } else if (a.length() < b.length()) {
+            a = addCustomPadding(a, b.length());
+        }
+        for (int i = 0; i < b.length(); i++) {
+            result = result.concat(b.substring(i, i+1).equalsIgnoreCase("1") ? "0" : "1");
+        }
+        b = result;
+        result = "";
+        int k = b.length();
+        do {            
+            if (b.substring(k - 1, k).equalsIgnoreCase("0")) {
+                b = b.substring(0, k - 1).concat("1").concat(b.substring(k, b.length()));
+                k = 0;
+            } else if (b.substring(k - 1, k).equalsIgnoreCase("1")) {
+                b = b.substring(0, k - 1).concat("0").concat(b.substring(k, b.length()));
+                k--;
+            }
+        } while (k > 0);*/
+      
+        /*int s = 0;          
+        int i = a.length() - 1, j = b.length() - 1; 
+        while (i >= 0 || j >= 0 || s == 1) 
+        {
+            s += ((i >= 0)? a.charAt(i) - '0': 0); 
+            s += ((j >= 0)? b.charAt(j) - '0': 0); 
+            result = (char)(s % 2 + '0') + result; 
+            s /= 2; 
+            i--; j--; 
+        }*/        
+        return addBinaryStrings(a, findTwoscomplementBinaryString(b));
+    }
+    
+    static String addBinaryStrings(String a, String b) {
+        String result = "";
+        int s = 0;          
+        int i = a.length() - 1, j = b.length() - 1; 
+        while (i >= 0 || j >= 0 || s == 1) { 
+            s += ((i >= 0)? a.charAt(i) - '0': 0); 
+            s += ((j >= 0)? b.charAt(j) - '0': 0); 
+            result = (char)(s % 2 + '0') + result; 
+            s /= 2;
+            i--; j--; 
+        }  
+        return result; 
+    } 
+    
+    static String findTwoscomplementBinaryString(String a) { 
+        StringBuffer str = new StringBuffer(a);
+        int n = str.length();
+        int i; 
+        for (i = n-1 ; i >= 0 ; i--) {
+            if (str.charAt(i) == '1') {
+                break; 
+            }
+        }
+        if (i == -1) {
+            return "1" + str; 
+        }
+        for (int k = i-1 ; k >= 0; k--) 
+        { 
+            if (str.charAt(k) == '1') {
+                str.replace(k, k+1, "0"); 
+            } else {
+                str.replace(k, k+1, "1"); 
+            }
+        } 
+        return str.toString(); 
+    } 
 }
