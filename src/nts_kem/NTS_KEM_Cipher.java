@@ -210,26 +210,75 @@ public class NTS_KEM_Cipher
         
         GF2VectorCustom c = new GF2VectorCustom(ep.getC());
         String cBitStringRepresentation = ByteUtils.erasePadding(privKey.getL() + n - k, c.getBinaryString());        
-        cBitStringRepresentation = ByteUtils.addCustomPadding(cBitStringRepresentation, n);
-        GF2Vector cNew = GF2Vector.OS2VP(cBitStringRepresentation.length(), ByteUtils.getBytesFromBinaryString(cBitStringRepresentation));
+        String cCompleteBitStringRepresentation = ByteUtils.addCustomPadding(cBitStringRepresentation, n);
+        GF2Vector cbc = GF2Vector.OS2VP(cBitStringRepresentation.length(), ByteUtils.getBytesFromBinaryString(cBitStringRepresentation));
+        GF2Vector cNew = GF2Vector.OS2VP(n, ByteUtils.getBytesFromBinaryString(cCompleteBitStringRepresentation));
         
         // compute syndrome of c P^-1
-        GF2Vector syndrome = (GF2Vector) privKey.getCanonicalH().rightMultiply(cNew);
+//        GF2Matrix hcanon = privKey.getCanonicalH();
+//        GF2Vector syndrome = (GF2Vector) hcanon.rightMultiply(cNew);
+        int[] a = privKey.getA(); //GF2Vector a = new GF2Vector(n - k + privKey.getL(), privKey.getA());
+        int[] h = privKey.getH(); //GF2Vector h = new GF2Vector(n - k + privKey.getL(), privKey.getH());
+        
+//        int[] abSplit = new int[privKey.getL()];
+//        int[] acSplit = new int[n - k];
+//        int[] hbSplit = new int[privKey.getL()];
+//        int[] hcSplit = new int[n - k];
+//        int pos = k - privKey.getL();
+//        for (int i = 0; i < privKey.getL(); i++) {
+//            abSplit[i] = a[pos];
+//            hbSplit[i] = h[pos];
+//            pos++;
+//        }
+//        for (int i = 0; i < n - k; i++) {
+//            acSplit[i] = a[pos];
+//            hcSplit[i] = h[pos];
+//        }
+        // Creating the H matrix
+        int[][] hArray = new int[2 * t][n - k + privKey.getL()];
+        for (int i = 0; i < 2 * t; i++)
+        {
+            for (int j = 0; j < n - k + privKey.getL(); j++)
+            {
+                hArray[i][j] =  privKey.getField().add(hArray[i][j], privKey.getField().mult(h[j], 
+                        a[j]^i));
+            }
+        }
+        
+        /* convert to matrix over GF(2) */
+        int[][] result = new int[2 * t * privKey.getField().getDegree()][(n - k + privKey.getL() + 31) >>> 5];
 
+        for (int j = 0; j < n - k + privKey.getL(); j++)
+        {
+            int q = j >>> 5;
+            int r = 1 << (j & 0x1f);
+            for (int i = 0; i < 2 * t; i++)
+            {
+                int e = hArray[i][j];
+                for (int u = 0; u < privKey.getField().getDegree(); u++)
+                {
+                    int b = (e >>> u) & 1;
+                    if (b != 0)
+                    {
+                        int ind = (i + 1) * privKey.getField().getDegree() - u - 1;
+                        result[ind][q] ^= r;
+                    }
+                }
+            }
+        }
+        System.out.println(hArray[0].length+"");
+        GF2Matrix hTrunc = (GF2Matrix) new GF2Matrix(n - k + privKey.getL(), result);//.computeTranspose();
+        GF2Vector syndrome = (GF2Vector) hTrunc.rightMultiply(cbc);
+        
         // decode syndrome
-        GF2Vector e = GoppaCode.syndromeDecode(
-                syndrome, 
-                privKey.getField(), 
-                privKey.getGoppaPoly(), 
-                privKey.getqInv()
-        );
-        GF2Vector key = (GF2Vector) cNew.add(e);
-
+        GF2Vector e = GoppaCode.syndromeDecode(syndrome, privKey.getField(), privKey.getGoppaPoly(), privKey.getqInv());
+        GF2Vector key = (GF2Vector) cNew.add(e);        
+        
         // multiply error vector with P
         e = (GF2Vector) e.multiply(new Permutation(privKey.getP().getVector()));
         
         // Obtaining cb from c
-        String cbBitStringRepresentation = cBitStringRepresentation.substring(privKey.getK() - privKey.getL(), privKey.getK());
+        String cbBitStringRepresentation = cCompleteBitStringRepresentation.substring(privKey.getK() - privKey.getL(), privKey.getK());
         String eb = new GF2VectorCustom(e.getEncoded(), e.getLength()).getBinaryString().substring(privKey.getK() - privKey.getL(), privKey.getK());
                 
         // Obtaining ke = cb - eb
@@ -237,7 +286,7 @@ public class NTS_KEM_Cipher
         
         // hamming weigth of the error vector
         int hw = e.getHammingWeight();
-        GF2Vector ke = new GF2VectorCustom(e).SHA3(n);
+        GF2VectorCustom ke = new GF2VectorCustom(new GF2VectorCustom(e).SHA3(privKey.getL()));
         
         return null;
     }

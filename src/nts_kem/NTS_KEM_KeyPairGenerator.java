@@ -149,7 +149,10 @@ public class NTS_KEM_KeyPairGenerator
                         n, 
                         field,
                         gp, 
-                        l
+                        l,
+                        ring, 
+                        h.getHCheck(), 
+                        a
                 );
 
         // return key pair

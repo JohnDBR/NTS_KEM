@@ -50,26 +50,34 @@ public class NTS_KEM_PrivateKeyParameters
     
     // the matrix used to compute square roots in <tt>(GF(2^m))^t</tt>
     private PolynomialGF2mSmallM[] qInv;
+    
+    private PolynomialRingGF2m ring;
 
     /**
      * Constructor.
      * 
-     * @param n         the length of the code
-     * @param k         the dimension of the code
-     * @param a         Array a to generate H matrix as the NTS_KEM paper 
-     *                  specifies 
-     * @param h         Array h to generate H matrix as the NTS_KEM paper 
-     *                  specifies 
-     * @param p         the permutation used to generate the check matrix
-     * @param z         Array z of 256 bits used for the decryption process
-     * @param field     the field polynomial defining the finite field
-     *                  <tt>GF(2<sup>m</sup>)</tt>
-     * @param gp        the irreducible Goppa polynomial
-     * @param l         the length of the key to be encapsulated
+     * @param n             the length of the code
+     * @param k             the dimension of the code
+     * @param a             Array a to generate H matrix as the NTS_KEM paper 
+     *                      specifies 
+     * @param h             Array h to generate H matrix as the NTS_KEM paper 
+     *                      specifies 
+     * @param p             the permutation used to generate the check matrix
+     * @param z             Array z of 256 bits used for the decryption process
+     * @param field         the field polynomial defining the finite field
+     *                      <tt>GF(2<sup>m</sup>)</tt>
+     * @param gp            the irreducible Goppa polynomial
+     * @param l             the length of the key to be encapsulated
+     * @param ring          the ring of the the irreducible Goppa polynomial
+     * @param canonicalH    H matrix of the NTS_KEM cryptosystem
+     * @param qInv          matrix used to compute square roots in (GF(2^m))^t
      */
     public NTS_KEM_PrivateKeyParameters(int[] a, int[] h, PermutationCustom p,
                                         int[] z, int k, int n, GF2mField field,
-                                        PolynomialGF2mSmallM gp, int l)
+                                        PolynomialGF2mSmallM gp, int l, 
+                                        PolynomialRingGF2m ring, 
+                                        GF2Matrix canonicalH,
+                                        PolynomialGF2mSmallM[] qInv)
     {
         super(true, null);
         this.a = a;
@@ -82,10 +90,10 @@ public class NTS_KEM_PrivateKeyParameters
         this.goppaPoly = gp;
         this.l = l;
         
-        this.canonicalH = GoppaCode.createCanonicalCheckMatrix(field, gp);
-        PolynomialRingGF2m ring = new PolynomialRingGF2m(field, gp);
+        this.canonicalH = canonicalH; //GoppaCode.createCanonicalCheckMatrix(field, gp); //
+        this.ring = ring;
          // matrix used to compute square roots in (GF(2^m))^t
-        this.qInv = ring.getSquareRootMatrix();
+        this.qInv = qInv;
     }
     
     /**
