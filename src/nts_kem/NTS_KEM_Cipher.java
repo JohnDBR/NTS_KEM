@@ -220,20 +220,6 @@ public class NTS_KEM_Cipher
         int[] a = privKey.getA(); //GF2Vector a = new GF2Vector(n - k + privKey.getL(), privKey.getA());
         int[] h = privKey.getH(); //GF2Vector h = new GF2Vector(n - k + privKey.getL(), privKey.getH());
         
-//        int[] abSplit = new int[privKey.getL()];
-//        int[] acSplit = new int[n - k];
-//        int[] hbSplit = new int[privKey.getL()];
-//        int[] hcSplit = new int[n - k];
-//        int pos = k - privKey.getL();
-//        for (int i = 0; i < privKey.getL(); i++) {
-//            abSplit[i] = a[pos];
-//            hbSplit[i] = h[pos];
-//            pos++;
-//        }
-//        for (int i = 0; i < n - k; i++) {
-//            acSplit[i] = a[pos];
-//            hcSplit[i] = h[pos];
-//        }
         // Creating the H matrix
         int[][] hArray = new int[2 * t][n - k + privKey.getL()];
         for (int i = 0; i < 2 * t; i++)
