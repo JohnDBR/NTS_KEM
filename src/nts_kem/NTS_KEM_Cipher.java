@@ -215,10 +215,8 @@ public class NTS_KEM_Cipher
         GF2Vector cNew = GF2Vector.OS2VP(n, ByteUtils.getBytesFromBinaryString(cCompleteBitStringRepresentation));
         
         // compute syndrome of c P^-1
-//        GF2Matrix hcanon = privKey.getCanonicalH();
-//        GF2Vector syndrome = (GF2Vector) hcanon.rightMultiply(cNew);
-        int[] a = privKey.getA(); //GF2Vector a = new GF2Vector(n - k + privKey.getL(), privKey.getA());
-        int[] h = privKey.getH(); //GF2Vector h = new GF2Vector(n - k + privKey.getL(), privKey.getH());
+        int[] a = privKey.getA(); 
+        int[] h = privKey.getH(); 
         
         // Creating the H matrix
         int[][] hArray = new int[2 * t][n - k + privKey.getL()];
@@ -252,7 +250,6 @@ public class NTS_KEM_Cipher
                 }
             }
         }
-        System.out.println(hArray[0].length+"");
         GF2Matrix hTrunc = (GF2Matrix) new GF2Matrix(n - k + privKey.getL(), result);//.computeTranspose();
         GF2Vector syndrome = (GF2Vector) hTrunc.rightMultiply(cbc);
         
@@ -274,6 +271,20 @@ public class NTS_KEM_Cipher
         int hw = e.getHammingWeight();
         GF2VectorCustom ke = new GF2VectorCustom(new GF2VectorCustom(e).SHA3(privKey.getL()));
         
-        return null;
+        if (ke.getBinaryString().equalsIgnoreCase(keBitStringRepresentation) && hw == t){
+            // Compute kr = Hl(ke | e)
+            GF2VectorCustom kee = ke.concatRight(e);
+            GF2VectorCustom kr = new GF2VectorCustom(kee.SHA3(privKey.getL()));
+            return kr;
+        }
+        // Compute Hl(z | 1a | cb | cc)
+        GF2VectorCustom z = new GF2VectorCustom(privKey.getZ());
+        String a1BinaryString = "";
+        for (int i = 0; i < k - privKey.getL(); i++) {
+            a1BinaryString = a1BinaryString.concat("1");
+        }
+        GF2VectorCustom a1 = new GF2VectorCustom(a1BinaryString);
+        GF2VectorCustom z1acbcc = z.concatLeft(a1).concatLeft(cbc);
+        return z1acbcc;
     }
 }

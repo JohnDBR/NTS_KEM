@@ -8,6 +8,7 @@ import org.bouncycastle.crypto.AsymmetricCipherKeyPairGenerator;
 import org.bouncycastle.crypto.CryptoServicesRegistrar;
 import org.bouncycastle.crypto.KeyGenerationParameters;
 import org.bouncycastle.pqc.math.linearalgebra.GF2Matrix;
+import org.bouncycastle.pqc.math.linearalgebra.GF2Vector;
 import org.bouncycastle.pqc.math.linearalgebra.GF2mField;
 import pqc.math.linearalgebra.GoppaCode;
 import pqc.math.linearalgebra.PermutationCustom;
@@ -129,11 +130,12 @@ public class NTS_KEM_KeyPairGenerator
         int k = shortG.getNumRows();
         
         // random array of 256 bits param needed to encrypt in the future
-        Random rand = new Random();
-        int[] z = new int[l];
-        for (int i = 0; i < l; i++) {
-            z[i] = rand.nextBoolean() ? 0 : 1;
-        }
+        GF2Vector z = new GF2Vector(l, t, new SecureRandom());
+//        Random rand = new Random();
+//        int[] z = new int[l];
+//        for (int i = 0; i < l; i++) {
+//            z[i] = rand.nextBoolean() ? 0 : 1;
+//        }
         
         // generate keys
         NTS_KEM_PublicKeyParameters pubKey = 

@@ -1,6 +1,7 @@
 package nts_kem;
 
 import org.bouncycastle.pqc.math.linearalgebra.GF2Matrix;
+import org.bouncycastle.pqc.math.linearalgebra.GF2Vector;
 import org.bouncycastle.pqc.math.linearalgebra.GF2mField;
 import org.bouncycastle.pqc.math.linearalgebra.GoppaCode;
 import org.bouncycastle.pqc.math.linearalgebra.PolynomialGF2mSmallM;
@@ -37,7 +38,7 @@ public class NTS_KEM_PrivateKeyParameters
     private int[] h;
     
     // Array z of 256 bits used for the decryption process
-    private int[] z;
+    private GF2Vector z;
     
     // the underlying finite field
     private GF2mField field;
@@ -73,7 +74,8 @@ public class NTS_KEM_PrivateKeyParameters
      * @param qInv          matrix used to compute square roots in (GF(2^m))^t
      */
     public NTS_KEM_PrivateKeyParameters(int[] a, int[] h, PermutationCustom p,
-                                        int[] z, int k, int n, GF2mField field,
+                                        GF2Vector z, int k, int n, 
+                                        GF2mField field,
                                         PolynomialGF2mSmallM gp, int l, 
                                         PolynomialRingGF2m ring, 
                                         GF2Matrix canonicalH,
@@ -155,7 +157,7 @@ public class NTS_KEM_PrivateKeyParameters
     /**
      * @return Array z of 256 bits used for the decryption process
      */
-    public int[] getZ()
+    public GF2Vector getZ()
     {
         return z;
     }    

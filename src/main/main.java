@@ -84,20 +84,8 @@ public class main {
         );
 
         nkChiper.init(false, nkPrivateKey);
-        nkChiper.decode(encodeParameters);
-        
-        int[] i = new int[5];
-        for (int j = 0; j < 5; j++) {
-            i[j] = j;
-        }
-        int[] k = new int[5];
-        for (int j = 0; j < 5; j++) {
-            k[j] = j;
-        }
-        int[] result = new int[5];
-        for (int j = 0; j < 5; j++) {
-            result[j] = i[j]^k[j];
-        }
+        System.out.println("session key = ");
+        System.out.println(nkChiper.decode(encodeParameters).getBinaryString() + "");
     }
     
 }
